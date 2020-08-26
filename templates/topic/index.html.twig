@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Topics{% endblock %}
+
+{% block body %}
+    <div class="bg-blue-light p-3 shadow">
+        <h2>Topics</h2>
+
+        {% if topics|length > 0 %}
+            {% for topic in topics %}
+                {% include('topic/_mini.html.twig') %}
+            {% endfor %}
+        {% else %}
+            <p>No topics found</p>
+        {% endif %}
+
+        <div class="nav my-3 px-3">
+            {{ knp_pagination_render(topics) }}
+        </div>
+
+        <a href="{{ path('topic_create') }}" class="btn btn-primary">Create new</a>
+    </div>
+{% endblock %}

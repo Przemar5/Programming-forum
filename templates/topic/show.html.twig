@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ topic.name }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex flex-column flex-sm-row justify-content-between px-2">
+        <h2>{{ topic.name }}</h2>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="d-flex flex-row align-items-center">
+                <a href="{{ path('topic_edit', {'id': topic.id}) }}" class="btn btn-primary mr-3">edit</a>
+
+                {{ include('topic/_delete_form.html.twig') }}
+            </div>
+        {% endif %}
+    </div>
+
+    <a href="{{ path('topic_index') }}" class="d-block px-2">&larr; Go back</a>
+
+    {% for post in posts %}
+        {% include 'post/post.html.twig' %}
+    {% endfor %}
+
+    <div class="nav my-3 px-3">
+        {{ knp_pagination_render(posts) }}
+    </div>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="my-3 mx-2">
+        	<h3>Your respond</h3>
+        	{% include 'post/_form.html.twig' %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block javascripts %}
+	<!-- CKEditor CDN (for post content) -->
+    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+	
+	<script>
+		CKEDITOR.replace('post_create_content');
+
+        $(document).ready(function() {
+            $('#tags').multiselect();
+        });
+	</script>
+
+    <script>
+        $(document).ready(function () {
+            $('.rate-form').on('submit', function (e) {
+                e.preventDefault()
+
+                const updateRateBtn = (btn, rate) => (rate > 0)
+                                        ? btn.attr('style', 'color: #333333 !important') 
+                                        : btn.attr('style', 'color: #9a9a9a !important')
+                
+                const updateUserPoints = (userId, points) => {
+                    console.log(userId)
+                    console.log(points)
+                    $('.post__user--' + userId + ' .post-user__points-ammount').text(points)
+                }
+                
+                const updatePostPoints = (container, points) => container.text('Points: ' + points)
+
+                const updateRatingPanel = (data) => {
+                    let rating = $(this).closest('.post__rating')
+                    let btnLike = rating.find('.post__like-btn').first()
+                    let btnDislike = rating.find('.post__dislike-btn').first()
+                    let points = rating.find('.post__points').first()
+
+                    updateRateBtn(btnLike, data.liked)
+                    updateRateBtn(btnDislike, data.disliked)
+                    updatePostPoints(points, data.points)
+                    updateUserPoints(data.userId, data.userPoints)
+                }
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: (data) => updateRatingPanel(JSON.parse(data)),
+                    fail: (data) => console.log(data)
+                })
+            })
+        })
+    </script>
+{% endblock %}

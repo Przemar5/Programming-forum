@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Thread{% endblock %}
+
+{% block body %}
+	<div class="container bg-dark">
+	    <h1>Create new Thread</h1>
+
+	    {{ include('thread/_form.html.twig') }}
+
+	    <a href="{{ path('thread_index') }}">back to list</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+	<!-- CKEditor CDN (for post content) -->
+	<script src="https://cdn.ckeditor.com/4.14.1/full/ckeditor.js"></script>
+	
+	<script>
+		CKEDITOR.replace('thread_post_post_content');
+
+        $(document).ready(function() {
+            $('#tags').multiselect();
+        });
+
+        $(document).ready(function() {
+            $('#tags').multiselect({
+                includeSelectAllOption: true,
+                buttonWidth: 250,
+                enableFiltering: true
+            });
+        });
+	</script>
+{% endblock %}

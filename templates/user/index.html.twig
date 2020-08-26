@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+{% endblock %}
+
+{% block body %}
+    <div class="bg-blue-light p-3 shadow">
+        <h2>Users</h2>
+
+        <table class="table table-responsive text-dark" id="userTable">
+            <thead>
+                <tr>
+                    <th>Avatar</th>
+                    <th>Email</th>
+                    <th>Login</th>
+                    <th>Registered at</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>
+                        <img src="{{ asset('images/avatars/' ~ user.avatar) }}" class="img-fluid w-100 my-2" style="max-height:auto; max-width:8rem;"/>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.login }}</td>
+                    <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('user_show', {'id': user.id}) }}" class="text-primary">show</a>
+
+                        {% if is_granted('ROLE_ADMIN') or app.user == user %}
+                            <a href="{{ path('user_edit', {'id': user.id}) }}" class="text-primary">edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="12">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#userTable').DataTable().done(
+                $('.paginate_button').attr('style', 'padding:.5rem;')
+            );
+        });
+    </script>
+{% endblock %}

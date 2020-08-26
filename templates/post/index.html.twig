@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+{% endblock %}
+
+{% block body %}
+    <div class="bg-blue-light p-3 shadow">
+        <h1>Posts</h1>
+
+        <table class="table table-responsive text-dark" id="postTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Content</th>
+                    <th>Topic</th>
+                    <th>Author</th>
+                    <th>Created at</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if posts|length > 0 %}
+                {% for post in posts %} 
+                    {% if post.deletedAt == null %}
+                        <tr>
+                            <td>{{ post.id }}</td>
+                            <td>{{ (post.content|length > 200) ? bbcode.render(post.content[:200]|escape('html'))|raw ~ '...' : bbcode.render(post.content|escape('html'))|raw }}</td>
+                            <td>{{ post.topic.name }}</td>
+                            <td>{{ post.user.login }}</td>
+                            <td>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>
+                                <a href="{{ path('topic_show', {'id': post.topic.id}) }}" class="text-primary">Go to topic</a>
+
+                                {% if is_granted('ROLE_ADMIN') or (app.user is defined and app.user == post.user) %}
+                                    <a href="{{ path('post_edit', {'id': post.id}) }}" class="text-primary">edit</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('post_create') }}">Create new</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#postTable').DataTable().done(
+                $('.paginate_button').attr('style', 'padding:.5rem;')
+            );
+        });
+    </script>
+{% endblock %}

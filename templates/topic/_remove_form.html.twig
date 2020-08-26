@@ -1,0 +1,5 @@
+<form method="topic" action="{{ path('topic_remove', {'id': topic.id}) }}" onsubmit="return confirm('Are you sure you want to permamently remove this topic?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('remove' ~ topic.id) }}">
+    <button class="btn btn-sm btn-danger">Remove</button>
+</form>

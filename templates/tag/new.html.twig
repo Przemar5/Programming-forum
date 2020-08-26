@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Tag{% endblock %}
+
+{% block body %}
+	<div class="bg-blue-light p-3 shadow">
+	    <h2>Create new tag</h2>
+
+	    {{ include('tag/_form.html.twig') }}
+
+	    <a href="{{ path('tag_index') }}">&larr; Go to tags list</a>
+	</div>
+{% endblock %}

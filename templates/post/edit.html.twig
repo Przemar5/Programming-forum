@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block body %}
+	<div class="bg-blue-light text-dark p-3 shadow">
+	    <div class="d-flex flex-column flex-sm-row justify-content-between">
+	    	<h2>Edit Post</h2>
+
+		    {{ include('post/_delete_form.html.twig') }}
+		</div>
+
+	    {{ include('post/_form.html.twig', {'button_label': 'Update'}) }}
+
+	    <a href="{{ path('topic_show', {'id': post.topic.id}) }}">&larr; Go to topic</a>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+	<!-- CKEditor CDN (for post content) -->
+    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+	
+	<script>
+		CKEDITOR.replace('post_edit_contentToAccept');
+	</script>
+{% endblock %}

@@ -1,0 +1,246 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search{% endblock %}
+
+{% block body %}
+	<div class="bg-blue-light p-3 shadow">
+	    <h2>Search for "{{ phrase }}"</h2>
+
+	    <div class="results">
+
+	        <div class="posts my-4">
+		    	<h3>Posts</h3>
+
+				<table class="table table-responsive text-dark" id="postTable">
+		            <thead>
+		                <tr>
+		                    <th>Id</th>
+		                    <th>Content</th>
+		                    <th>Topic</th>
+		                    <th>Author</th>
+		                    <th>Created at</th>
+		                    <th>actions</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		            {% if results.posts|length > 0 %}
+		                {% for post in results.posts %} 
+		                    {% if post.deletedAt == null %}
+		                        <tr>
+		                            <td>{{ post.id }}</td>
+		                            <td>{{ (post.content|length > 200) ? bbcode.render(post.content[:200]|escape('html'))|raw ~ '...' : bbcode.render(post.content|escape('html'))|raw }}</td>
+		                            <td>{{ post.topic.name }}</td>
+		                            <td>{{ post.user.login }}</td>
+		                            <td>{{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+		                            <td>
+		                                <a href="{{ path('topic_show', {'id': post.topic.id}) }}" class="text-primary">Go to topic</a>
+
+		                                {% if is_granted('ROLE_ADMIN') or (app.user is defined and app.user == post.user) %}
+		                                    <a href="{{ path('post_edit', {'id': post.id}) }}" class="text-primary">edit</a>
+		                                {% endif %}
+		                            </td>
+		                        </tr>
+		                    {% endif %}
+		                {% endfor %}
+		            {% else %}
+		                <tr>
+		                    <td colspan="6">no posts found</td>
+		                </tr>
+		            {% endif %}
+		            </tbody>
+		        </table>
+		    </div>
+	        
+			<hr>
+
+	        <div class="topics my-4">
+		    	<h3>Topics</h3>
+
+	    		<table class="table table-responsive text-dark" id="topicTable">
+		            <thead>
+		                <tr>
+		                    <th>id</th>
+		                    <th>Name</th>
+		                    <th>Category</th>
+		                    <th>Tags</th>
+		                    <th>Created at</th>
+		                    <th>actions</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		            {% for topic in results.topics %}
+		                <tr>
+		                    <td>{{ topic.id }}</td>
+		                    <td>{{ topic.name }}</td>
+		                    <td>{{ topic.category }}</td>
+		                    <td>
+		                    	{% for tag in topic.tags %}
+		                    		<a href="{{ path('tag_show', {'id': tag.id}) }}" class="text-primary">
+		                    			{{ tag.name }}
+		                    		</a>, 
+		                    	{% endfor %}
+		                    </td>
+		                    <td>{{ topic.createdAt|date('Y-m-d H:i:s') }}</td>
+		                    <td>
+		                        <a href="{{ path('topic_show', {'id': topic.id}) }}" class="text-primary">show</a>
+
+		                        {% if is_granted('ROLE_ADMIN') %}
+		                            <a href="{{ path('topic_edit', {'id': topic.id}) }}" class="text-primary">edit</a>
+		                        {% endif %}
+		                    </td>
+		                </tr>
+		            {% else %}
+		                <tr>
+		                    <td colspan="6">no topics found</td>
+		                </tr>
+		            {% endfor %}
+		            </tbody>
+		        </table>
+		    </div>
+	        
+			<hr>
+
+	    	<div class="users my-4">
+		    	<h3>Users</h3>
+
+	    		<table class="table table-responsive text-dark" id="userTable">
+		            <thead>
+		                <tr>
+		                    <th>Avatar</th>
+		                    <th>Email</th>
+		                    <th>Login</th>
+		                    <th>Registered at</th>
+		                    <th>actions</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		            {% for user in results.users %}
+		                <tr>
+		                    <td>
+		                        <img src="{{ asset('images/avatars/' ~ user.avatar) }}" class="img-fluid w-100 my-2" style="max-height:auto; max-width:8rem;"/>
+		                    </td>
+		                    <td>{{ user.email }}</td>
+		                    <td>{{ user.login }}</td>
+		                    <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+		                    <td>
+		                        <a href="{{ path('user_show', {'id': user.id}) }}" class="text-primary">show</a>
+
+		                        {% if is_granted('ROLE_ADMIN') or app.user == user %}
+		                            <a href="{{ path('user_edit', {'id': user.id}) }}" class="text-primary">edit</a>
+		                        {% endif %}
+		                    </td>
+		                </tr>
+		            {% else %}
+		                <tr>
+		                    <td colspan="12">no users found</td>
+		                </tr>
+		            {% endfor %}
+		            </tbody>
+		        </table>
+		    </div>
+
+		    <hr>
+
+		    <div class="categories my-4">
+		    	<h3>Categories</h3>
+
+	    		<table class="table table-responsive text-dark" id="categoryTable">
+		            <thead>
+		                <tr>
+		                    <th>Id</th>
+		                    <th>Name</th>
+		                    <th>Slug</th>
+		                    <th>Parent category</th>
+		                    <th>Topics</th>
+		                    <th>Posts</th>
+		                    <th>actions</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                {% for category in results.categories %}
+		                    <tr class="category-{{ category.id }}">
+		                        <td>{{ category.id }}</td>
+		                        <td>{{ category.name }}</td>
+		                        <td>{{ category.slug }}</td>
+		                        <td>{{ category.parentCategory }}</td>
+		                        <td>{{ category.topicsCount }}</td>
+		                        <td>{{ category.postsCount }}</td>
+		                        <td>
+		                            <a href="{{ path('category_show', {'slug': category.slug}) }}" class="text-primary">show</a>
+		                            
+		                            {% if is_granted('ROLE_ADMIN') %}
+		                                <a href="{{ path('category_edit', {'id': category.id}) }}" class="text-primary">edit</a>
+		                            {% endif %}
+		                        </td>
+		                    </tr>
+		                {% else %}
+		                    <tr>
+		                        <td colspan="7">no categories found</td>
+		                    </tr>
+		                {% endfor %}
+		            </tbody>
+		        </table>
+		    </div>
+
+	        <hr>
+
+	        <div class="tags my-4">
+		    	<h3>Tags</h3>
+
+		    	<table class="table table-responsive text-dark" id="tagTable">
+		            <thead>
+		                <tr>
+		                    <th>Id</th>
+		                    <th>Name</th>
+		                    <th>Topics</th> 
+		                    <th>Posts</th>
+		                    <th>actions</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		            {% for tag in results.tags %}
+		                <tr>
+		                    <td>{{ tag.id }}</td>
+		                    <td>{{ tag.name }}</td>
+		                    <td>{{ tag.topicsCount }}</td>
+		                    <td>{{ tag.postsCount }}</td>
+		                    <td>
+		                        <a href="{{ path('tag_show', {'id': tag.id}) }}" class="text-primary">show</a>
+		                        
+		                        {% if is_granted('ROLE_ADMIN') %}
+		                            <a href="{{ path('tag_edit', {'id': tag.id}) }}" class="text-primary">edit</a>
+		                        {% endif %}
+		                    </td>
+		                </tr>
+		            {% else %}
+		                <tr>
+		                    <td colspan="5">no tags found</td>
+		                </tr>
+		            {% endfor %}
+		            </tbody>
+		        </table>
+		    </div>
+
+	    </div>
+
+        <a href="{{ path('home') }}">&larr; Go to main page</a>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+        	let tables = ['user', 'post', 'category', 'tag', 'topic']
+
+        	//for (let i in tables) {
+
+	            $('.table').DataTable().done(
+	                $('.paginate_button').attr('style', 'padding:.5rem;')
+	            );
+            //}
+        });
+    </script>
+{% endblock %}

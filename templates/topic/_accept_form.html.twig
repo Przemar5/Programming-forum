@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('topic_accept', {'id': topic.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('accept' ~ topic.id) }}">
+    <button class="btn btn-sm btn-success">Accept</button>
+</form>

@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Thread{% endblock %}
+
+{% block link %}
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap-multiselect/bootstrap-multiselect.css" type="text/css">
+    <script type="text/javascript" src="js/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+
+{% endblock %}
+
+
+{% block body %}
+    <div class="container bg-dark">
+        <h1>Create new Thread</h1>
+
+        <link rel="stylesheet" href="minified/themes/default.min.css" />
+    	<script src="minified/sceditor.min.js"></script>
+
+        <form name="thread" method="post">
+        	<div id="thread">
+        		<input type="hidden" value="{{ csrf_token('create-thread') }}"/>
+
+        		<div class="form-group">
+        			<label for="thread_name" class="required">Name</label>
+        			<input type="text" id="thread_name" name="thread[name]" required="required" maxlength="255" class="form-control"/>
+        		</div>
+
+        		{% if categories|length %}
+    				<div class="form-group">
+    					<label for="category">Example select</label>
+    					<select class="form-control" id="category" name="category">
+    			    		{% for category in categories %}
+    							<option value="{{ category.id }}">
+    								{{ category.name }}
+    							</option>
+    						{% endfor %}
+    					</select>
+    				</div>
+    			{% endif %}
+
+    			{% if tags|length > 0 %}
+    	            <label for="tags">Tags</label>
+    	            <select class="form-control mb-3" data-live-search="true" multiple="" style="font-family: inherit;" name="tags[]" id="tags">
+    	                {% for tag in tags %}
+    	                    <option value="{{ tag.id }}">
+    	                        {{ tag.name }}
+    	                    </option>
+    	                {% endfor %}
+    	            </select>
+                {% endif %}
+
+        		<div class="form-group">
+        			<label for="post_content" class="required">Post</label>
+        			<textarea id="post_content" name="post[content]" rows="10" required="required" class="form-control"></textarea>
+        		</div>
+        	</div>
+
+        	<input type="submit" class="btn btn-primary" value="Save"/>
+        </form>
+
+        <a href="{{ path('thread_index') }}">back to list</a>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+	<!-- CKEditor CDN (for post content) -->
+	<script src="https://cdn.ckeditor.com/4.14.1/full/ckeditor.js"></script>
+	
+	<script>
+		CKEDITOR.replace('post_content');
+
+        $(document).ready(function() {
+            $('#tags').multiselect();
+        });
+
+        $(document).ready(function() {
+            $('#tags').multiselect({
+                includeSelectAllOption: true,
+                buttonWidth: 250,
+                enableFiltering: true
+            });
+        });
+	</script>
+{% endblock %}

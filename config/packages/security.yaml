@@ -1,0 +1,62 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: true
+            lazy: true
+            provider: app_user_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+            # access_denied_handler: App\Security\AccessDeniedHandler
+            access_denied_handler: App\Controller\AccessDeniedController
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /topic/create$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: /topic/([0-9]+)/edit$, roles: ROLE_ADMIN }
+        - { path: /topic/([0-9]+)/delete$, roles: ROLE_ADMIN }
+        - { path: /post/create$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: /post/([0-9]+)/edit$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: /post/([0-9]+)/delete$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: /post/([0-9]+)/rate$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: /post/([0-9]+)/accept$, roles: ROLE_ADMIN }
+        - { path: /post/([0-9]+)/remove$, roles: ROLE_ADMIN }
+        - { path: /category/create$, roles: ROLE_ADMIN }
+        - { path: /category/([0-9]+)/edit$, roles: ROLE_ADMIN }
+        - { path: /category/([0-9]+)/delete$, roles: ROLE_ADMIN }
+        - { path: /tag/([0-9]+)/create$, roles: ROLE_ADMIN }
+        - { path: /tag/([0-9]+)/edit$, roles: ROLE_ADMIN }
+        - { path: /tag/([0-9]+)/delete$, roles: ROLE_ADMIN }
+        - { path: /user/([0-9]+)/edit$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: /user/([0-9]+)/delete$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: /dashboard$, roles: ROLE_ADMIN }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }

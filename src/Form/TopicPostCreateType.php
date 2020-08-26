@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Post;
+use App\Entity\Topic;
+use App\Form\PostCreateType;
+use App\Form\TopicType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class TopicPostCreateType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('topic', TopicType::class, [
+                'label' => false,
+            ])
+            ->add('post', PostCreateType::class, [
+                'label' => false,
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'topic' => new Topic(),
+            'post' => new Post(),
+        ]);
+    }
+}

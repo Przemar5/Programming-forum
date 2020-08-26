@@ -1,0 +1,91 @@
+<div class="row m-sm-2 bg-blue-light text-dark my-3 py-3 px-1 px-sm-3 post shadow">
+	
+	<div class="col-4 col-sm-3 col-md-2 d-flex flex-column justify-content-start post__user post__user--{{ post.user.id }}" style="border-right:1px solid black;">
+		{% if post.user.deletedAt == null %}
+			<a href="{{ path('user_show', {'id': post.user.id}) }}" class="post-user__login">
+				{{ post.user.login }}
+			</a>
+			<img src="{{ asset('images/avatars/' ~ post.user.avatar) }}" class="img-fluid w-100 my-2" style="max-height:auto;"/>
+			{% if post.user.hasRole('ROLE_ADMIN') %}<span class="font-weight-bold">Admin</span>{% endif %}
+			<small class="post-user__points">
+				Points: <span class="post-user__points-ammount">{{ post.user.points }}</span>
+			</small>
+			<small class="post-user__gender">
+				Sex: {{ post.user.gender }}
+			</small>
+			<small class="post-user__location">
+				Location: {% if post.user.location is not null %}{{ post.user.location }}{% else %}none{% endif %}
+			</small>
+			<small class="post-user__register-date">
+				Registered: {{ post.user.createdAt|date('F jS, Y') }}
+			</small>
+			<small class="post-user__posts-count">
+				Posts: {{ post.user.posts|length }}
+			</small>
+		{% else %}
+			<img src="{{ asset('images/avatars/no_avatar.png') }}" class="img-fluid w-100 my-2" style="max-height:auto;"/>
+			<p class="font-italic">user deleted</p>
+		{% endif %}
+	</div>
+
+	<div class="col-8 col-sm-9 col-md-10 d-flex flex-column justify-content-between post__content">
+
+		<div class="post__content">
+			<div class="d-flex flex-column flex-sm-row justify-content-between pull-right post__top">
+				<small>
+					{{ post.createdAt|date('F jS, Y \\a\\t h:i:s') }}
+				</small>
+
+				{% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user == post.user or is_granted('ROLE_ADMIN')) and post.deletedAt == null %}
+					<div class="d-flex flex-row post__actions">
+						<a href="{{ path('post_edit', {'id': post.id}) }}" class="btn btn-sm btn-primary mr-2">
+							Edit
+						</a>
+
+						{% include 'post/_delete_form.html.twig' %}
+					</div>
+				{% endif %}
+			</div>
+			
+			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+				<button class="btn btn-muted d-none" title="quote" onclick="
+				console.log(window.getSelection().toString())
+				">
+					<img src="{{ asset('images/icons/quote.svg') }}" width="20" height="30"/>
+				</button>
+			{% endif %}
+
+			<p class="post__body">
+				{% if post.deletedAt == null %}
+					{{ bbcode.render(post.content|escape('html'))|raw }}
+				{% else %}
+					<p class="font-italic">Comment was deleted</p>
+				{% endif %}
+			</p>
+		</div>
+
+		<div class="pull-right d-flex flex-row justify-content-end post__rating">
+			{% if is_granted('IS_AUTHENTICATED_FULLY') and app.user != post.user %}
+				<form method="post" action="{{ path('post_rate', {'id': post.id}) }}" class="mr-sm-0 mb-0 mb-sm-0 rate-form">
+				    <input type="hidden" name="_token" value="{{ csrf_token('rate' ~ post.id) }}">
+				    <input type="hidden" name="type" value="1">
+				    <button class="btn btn-sm btn-muted post__like-btn" style="color: {% if post.likedBy(app.user) %}#333333;{% else %}#9a9a9a;{% endif %}" {% if post.deletedAt != null %}disabled{% endif %}>
+				    	<i class="fas fa-thumbs-up"></i>
+				    </button>
+				</form>
+
+				<form method="post" action="{{ path('post_rate', {'id': post.id}) }}" class="mr-sm-1 mb-0 mb-sm-1 rate-form">
+				    <input type="hidden" name="_token" value="{{ csrf_token('rate' ~ post.id) }}">
+				    <input type="hidden" name="type" value="-1">
+				    <button class="btn btn-sm btn-muted post__dislike-btn" style="color: {% if post.dislikedBy(app.user) %}#333333;{% else %}#9a9a9a;{% endif %}" {% if post.deletedAt != null %}disabled{% endif %}>
+				    	<i class="fas fa-thumbs-down"></i>
+				    </button>
+				</form>
+			{% endif %}
+
+			<div class="ml-3 post__points">
+				Points: {{ post.points }}
+			</div>
+		</div>
+	</div>
+</div>

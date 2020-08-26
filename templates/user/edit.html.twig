@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User "{{ user.login }}"{% endblock %}
+
+{% block body %}
+    <div class="container bg-blue-light p-3 shadow">
+        <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
+            <h2>User "{{ user.login }}"</h2>
+
+            <div class="d-flex flex-row align-items-center">
+                {% if app.user is defined and app.user == user %}
+                    <a href="{{ path('user_edit_password', {'id': user.id}) }}" class="btn btn-sm btn-outline-primary mr-2 mt-2">Edit password</a>
+                {% endif %}
+
+				{{ include('user/_delete_form.html.twig') }}
+			</div>
+        </div>
+
+	    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+	    <a href="{{ path('user_show', {'id':user.id}) }}">&larr; Go back</a>
+    </div>
+{% endblock %}

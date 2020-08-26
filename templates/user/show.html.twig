@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User "{{ user.login }}"{% endblock %}
+
+{% block links %}
+    <style>
+        @media screen and (max-width: 330px) {
+            
+            .user__actions--full {
+                flex-direction: column !important;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container bg-blue-light p-3 shadow">
+        <div class="d-flex flex-column flex-md-row justify-content-between mb-2">
+            <h2>User "{{ user.login }}"</h2>
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') and (app.user == user or is_granted('ROLE_ADMIN')) %}
+                <div class="user__actions--full">
+                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-sm btn-primary d-inline-block mr-2 mt-2">Edit</a>
+
+                    {% if app.user == user %}
+                        <a href="{{ path('user_edit_password', {'id': user.id}) }}" class="btn btn-sm btn-outline-primary d-inline-block mr-2 mt-2">Edit password</a>
+                    {% endif %}
+
+                    {{ include('user/_delete_form.html.twig') }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 col-md-3">
+                <img src="{{ asset('images/avatars/' ~ user.avatar) }}" class="img-fluid"/>
+            </div>
+
+            <div class="col-sm-8 col-md-9">
+                <table class="table table-responsive text-dark">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ user.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Login</th>
+                            <td>{{ user.login }}</td>
+                        </tr>
+                        <tr>
+                            <th>Registered at</th>
+                            <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <a href="{{ path('user_index') }}">&larr; Go to users list</a>
+    </div>
+{% endblock %}

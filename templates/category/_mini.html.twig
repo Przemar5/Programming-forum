@@ -1,0 +1,66 @@
+<div class="d-flex flex-row bg-blue p-0 my-2 category-subcategory">
+	<div class="d-flex justify-content-center align-items-center p-1 category-subcategory__icon">
+		<img src="{{ asset('images/icons/talk.png') }}" class="img-fluid float-left h-auto"/>
+	</div>
+	<div class="mr-auto py-1 px-2 category-subcategory__info">
+		<a class="d-block" href="{{ path('category_show', {slug: subcategory.slug}) }}">
+			{{ subcategory.name }}
+		</a>
+		<small class="d-block font-italic">
+			{{ subcategory.description }}
+		</small>
+		<small>
+			{% if subcategory.subcategories|length > 0 %}
+				Subcategories:
+				{% for sub in subcategory.subcategories %}
+					<a href="{{ path('category_show', {'slug': sub.slug}) }}" title="{{ sub.name }}">
+						{% if sub.name|length > 80 %}
+							{{ sub.name[:80] }}...
+						{% else %}
+							{{ sub.name }}
+						{% endif %}
+					</a>,
+				{% endfor %}
+			{% endif %}
+		</small>
+	</div>
+	<div class="py-1 px-2 d-none d-md-flex flex-column justify-content-center align-items-center category-subcategory__topics-count">
+		<span>Topics:</span>
+		<span>{{ subcategory.topicsCount() }}</span>
+	</div>
+	<div class="py-1 px-2 d-none d-md-flex flex-column justify-content-center align-items-center category-subcategory__posts-count">
+		<span>Posts:</span>
+		<span>{{ subcategory.postsCount() }}</span>
+	</div>
+	<div class="category-subcategory__last-post py-1 px-2">
+		{% set lastPost = subcategory.lastPost() %}
+		{% if lastPost is not null %}
+			<a href="{{ path('topic_show', {'id': lastPost.topic.id}) }}" class="category-subcategory__last-post__topic mb-0 pb-0" title="{{ lastPost.topic.name }}">
+				Re: 
+				{% if lastPost.topic.name|length > 20 %}
+					{{ lastPost.topic.name[:20] }}...
+				{% else %}
+					{{ lastPost.topic.name }}
+				{% endif %}
+			</a>
+			<small class="d-block font-italic category-subcategory__last-post__user">
+				{% if lastPost.user.deletedAt == null %}
+					Last post by <a href="{{ path('user_show', {'id': lastPost.user.id}) }}" title="{{ lastPost.user.login }}">
+						{% if lastPost.user.login|length > 20 %}
+							{{ lastPost.user.login[:20] }}...
+						{% else %}
+							{{ lastPost.user.login }}
+						{% endif %}
+					</a>
+				{% else %}
+					Last post by deleted user
+				{% endif %}
+			</small>
+			<small class="d-block font-italic category-subcategory__last-post__date">
+				at {{ lastPost.createdAt|date('F jS, Y \\a\\t g:ia') }}
+			</small>
+		{% else %}
+			No topics and posts yet
+		{% endif %}
+	</div>
+</div>

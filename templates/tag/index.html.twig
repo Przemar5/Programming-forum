@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tags{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+{% endblock %}
+
+{% block body %}
+    <div class="bg-blue-light p-3 shadow">
+        <h2>Tags</h2>
+
+        <table class="table table-responsive text-dark" id="tagTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Topics</th> 
+                    <th>Posts</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for tag in tags %}
+                <tr>
+                    <td>{{ tag.id }}</td>
+                    <td>{{ tag.name }}</td>
+                    <td>{{ tag.topicsCount }}</td>
+                    <td>{{ tag.postsCount }}</td>
+                    <td>
+                        <a href="{{ path('tag_show', {'id': tag.id}) }}" class="text-primary">show</a>
+                        
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('tag_edit', {'id': tag.id}) }}" class="text-primary">edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('tag_create') }}">Create new</a>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tagTable').DataTable().done(
+                $('.paginate_button').attr('style', 'padding:.5rem;')
+            );
+        });
+    </script>
+{% endblock %}

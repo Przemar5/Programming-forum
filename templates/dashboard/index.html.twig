@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+{% endblock %}
+
+{% block body %}
+    <div class="bg-blue-light p-3 shadow">
+        <h2>Posts to accept</h2>
+
+        <table class="table table-responsive text-dark" id="postTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Content</th>
+                    <th>Topic</th>
+                    <th>Author</th>
+                    <th>Created at</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for post in postsToAccept %}
+                <tr>
+                    <td>{{ post.id }}</td>
+                    <td>{% set content = (post.contentToAccept is defined) ? post.contentToAccept : post.content %}
+                    {{ (content|length > 200) ? bbcode.render(content[:200]|escape('html'))|raw ~ '...' : bbcode.render(content|escape('html'))|raw }}</td>
+                    <td>{{ post.topic.name }}</td>
+                    <td>{{ post.user.login }}</td>
+                    <td>{{ post.createdAt|date('Y-m-d H:i:s') }}</td>
+                    <td>
+                    	{% if post.topic.accepted == true %}
+                        	<a href="{{ path('topic_show', {'id': post.topic.id}) }}" class="text-primary">Go to topic</a>
+                        {% endif %}
+
+                        <a href="{{ path('post_edit', {'id': post.id}) }}" class="text-primary">edit</a>
+
+                        {% include('post/_accept_form.html.twig') %}
+
+                        {% include('post/_remove_form.html.twig') %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Topics to accept</h2>
+
+        <table class="table table-responsive text-dark" id="topicTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Cateogry</th>
+                    <th>Author</th>
+                    <th>Created at</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for topic in topicsToAccept %}
+                <tr>
+                    <td>{{ topic.id }}</td>
+                    <td>{{ topic.name }}</td>
+                    <td>{{ topic.category.name }}</td>
+                    <td>{{ topic.user.login }}</td>
+                    <td>{{ topic.createdAt|date('Y-m-d H:i:s') }}</td>
+                    <td>
+                        <a href="{{ path('topic_edit', {'id': topic.id}) }}" class="text-primary">edit</a>
+
+                        {% include('topic/_accept_form.html.twig') %}
+
+                        {% include('topic/_remove_form.html.twig') %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#postTable').DataTable().done(
+                $('.paginate_button').attr('style', 'padding:.5rem;')
+            );
+        });
+    </script>
+{% endblock %}

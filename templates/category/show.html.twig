@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Category "{{ category.name }}"{% endblock %}
+
+{% block body %}
+    <div class="container bg-dark p-3">
+        <div class="d-flex flex-column flex-sm-row justify-content-between mb-2 shadow">
+            <h2>Category "{{ category.name }}"</h2>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <div>
+                    <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
+
+                    {{ include('category/_delete_form.html.twig') }}
+                </div>
+            {% endif %}
+        </div>
+
+        <table class="table table-dark table-striped">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ category.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ category.name }}</td>
+                </tr>
+                <tr>
+                    <th>Slug</th>
+                    <td>{{ category.slug }}</td>
+                </tr>
+                <tr>
+                    <th>Parent category</th>
+                    <td>{{ category.parentCategory }}</td>
+                </tr>
+                <tr>
+                    <th>Topics</th>
+                    <td>{{ category.topicsCount }}</td>
+                </tr>
+                <tr>
+                    <th>Posts</th>
+                    <td>{{ category.postsCount }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex flex-row justify-content-between">
+            <div class="mr-auto">
+                <a href="{{ path('category_index') }}">&larr; Go to list</a>
+
+                <a href="{{ path('category_edit', {'id': category.id}) }}">edit</a>
+            </div>
+
+            {{ include('category/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ (category is defined) ? category.name : 'Programming Forum' }}{% endblock %}
+
+{% block body %}
+	<div class="d-flex flex-column flex-sm-row justify-content-between align-items-start">
+		{% if category is defined %}
+			<h2 class="order-2 order-sm-1">Category "{{ category.name }}"</h2>
+		{% else %}
+			<h2 class="order-2 order-sm-1">Categories</h2>
+		{% endif %}
+
+		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			<a href="{{ path('topic_create') }}" class="btn btn-primary mb-2 order-1 order-sm-2">
+				Create new topic
+			</a>
+		{% endif %}
+	</div>
+
+	{% if categories|length > 0 %}
+		{% if category is defined %}
+			<h3 class="font-italic">Subcategories</h3>
+		{% endif %}
+
+		{% for category in categories %}
+			<div class="card bg-blue-light text-dark my-2 category-div shadow">
+				<div class="card-body px-2 px-sm-3 py-sm-3 category-div__inner">
+					<h4 class="category-div__title">
+						{{ category.name }}
+					</h4>
+
+					<div class="category-div__sub">
+						{% if category.getSubcategories()|length > 0 %}
+							<h5>Subcategories</h5>
+
+							{% for subcategory in category.getSubcategories() %}
+								{% if loop.index < 5 %}
+									{% include 'category/_mini.html.twig' %}
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							<p>No subcategories found</p>
+						{% endif %}
+
+						{% if category.topics|length > 0 %}
+							<h5>Topics</h5>
+
+							{% for topic in category.topics %}
+								{% if loop.index < 5 %}
+									{% include 'topic/_mini.html.twig' %}
+								{% endif %}
+							{% endfor %}
+						{% else %}
+							<p>No topics found</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	{% elseif category is defined %}
+		<h4>There are no subcategories</h4>
+	{% endif %}
+
+	{% if category is defined %}
+		{% if category.topics|length > 0 %}
+			<div class="card bg-blue-light text-dark my-2 cateogry-topic-div shadow">
+				<div class="card-body px-2 px-sm-3 py-sm-3 category-div__inner">
+					<h3 class="font-italic">Topics</h3>
+
+					{% for topic in category.topics %}
+						{% include 'topic/_mini.html.twig' %}
+					{% endfor %}
+				</div>
+			</div>
+		{% else %}
+			<h4>There are no topics</h4>
+		{% endif %}
+	{% endif %}
+{% endblock %}
