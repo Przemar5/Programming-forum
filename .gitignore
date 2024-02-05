@@ -16,6 +16,5 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-###> heroku ###
-/Procfile
-###< heroku ###
+/docker-compose.yaml
+/docker_database

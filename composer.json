@@ -49,6 +49,7 @@
         "vanilla/nbbc": "^2.2"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "*",
         "symfony/apache-pack": "^1.0",
         "symfony/browser-kit": "^5.1",
         "symfony/css-selector": "^5.1",
@@ -65,7 +66,10 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {
