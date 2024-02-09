@@ -37,7 +37,7 @@ class Topic
     /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
-    private $accepted;
+    private $accepted = false;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="topics")
@@ -62,7 +62,7 @@ class Topic
     /**
      * @ORM\Column(type="boolean", options={"defaults"=0}, nullable=true)
      */
-    private $closed;
+    private $closed = false;
 
     public function __construct()
     {

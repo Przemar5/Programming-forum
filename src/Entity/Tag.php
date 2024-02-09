@@ -27,7 +27,7 @@ class Tag
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
      * @Assert\Length(max=255)
-     * @Assert\Regex("/^[\w\- \!@#$%\^&\*\+=?\|,\.\/:;<>\{\}\(\)\[\]]+$/")
+     * @Assert\Regex("/^[\w\d\-\_]+$/")
      */
     private $name;
 

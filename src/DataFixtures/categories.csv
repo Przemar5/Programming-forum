@@ -1,0 +1,47 @@
+name	parentCategory	slug	description
+Programming Languages		programming-languages	Programming languages are tools used to write instructions for computers to execute tasks.
+Web Development		web-development	Web development involves building and maintaining websites and web applications using technologies like HTML, CSS, and JavaScript.
+Mobile App Development		mobile-app-development	Mobile app development is the process of creating software applications that run on mobile devices like smartphones and tablets.
+Data Science and Machine Learning		data-science-machine-learning	Data science and machine learning involve analyzing large datasets to extract insights and make predictions using algorithms and statistical models.
+Software Engineering		software-engineering	Software engineering is the discipline of designing, developing, and maintaining software systems using engineering principles and methodologies.
+Computer Science Fundamentals		computer-science-fundamentals	Computer science fundamentals encompass the basic concepts and principles underlying computation, algorithms, data structures, and computer systems.
+Python	Programming Languages	python	General-purpose programming language known for its simplicity and readability
+Java	Programming Languages	java	Object-oriented programming language used for building mobile apps, web applications, and more
+C++	Programming Languages	cpp	High-level programming language known for its performance and flexibility
+JavaScript	Programming Languages	javascript	Lightweight scripting language used for web development
+Ruby	Programming Languages	ruby	Elegant and easy-to-read programming language used for web development
+Swift	Programming Languages	swift	Powerful and intuitive programming language developed by Apple for iOS, macOS, watchOS, and tvOS development
+Go	Programming Languages	go	Open-source programming language developed by Google, known for its efficiency and concurrency support
+PHP	Programming Languages	php	Server-side scripting language used for web development
+C#	Programming Languages	csharp	Versatile programming language developed by Microsoft for building various types of applications
+Rust	Programming Languages	rust	Systems programming language focused on safety, speed, and concurrency
+HTML/CSS	Web Development	html-css	Markup and styling languages used for creating web pages and applications
+Frontend Frameworks	Web Development	frontend-frameworks	Libraries and tools used to build user interfaces for web applications
+Backend Frameworks	Web Development	backend-frameworks	Tools and frameworks used to develop the server-side logic of web applications
+Web Design	Web Development	web-design	Process of creating visually appealing and user-friendly websites
+Responsive Design	Web Development	responsive-design	Approach to web design that ensures optimal viewing experience across different devices
+Accessibility	Web Development	accessibility	Designing websites and applications to be usable by people with disabilities
+Android Development	Mobile App Development	android-development	Development of mobile applications for the Android operating system
+iOS Development	Mobile App Development	ios-development	Development of mobile applications for the iOS operating system
+Cross-Platform Development	Mobile App Development	cross-platform-development	Development of mobile applications that can run on multiple platforms
+Mobile UI/UX Design	Mobile App Development	mobile-ui-ux-design	Designing intuitive and visually appealing user interfaces for mobile applications
+App Monetization	Mobile App Development	app-monetization	Strategies and techniques for generating revenue from mobile applications
+App Store Optimization	Mobile App Development	app-store-optimization	Techniques for improving the visibility and ranking of mobile apps in app stores
+Data Analysis	Data Science and Machine Learning	data-analysis	Process of inspecting, cleansing, transforming, and modeling data to extract useful information
+Machine Learning Models	Data Science and Machine Learning	machine-learning-models	Algorithms and techniques used to train and deploy machine learning models
+Deep Learning	Data Science and Machine Learning	deep-learning	Subset of machine learning focused on neural networks with multiple layers
+Natural Language Processing	Data Science and Machine Learning	natural-language-processing	Field of AI focused on enabling computers to understand, interpret, and generate human language
+Big Data Technologies	Data Science and Machine Learning	big-data-technologies	Technologies and frameworks used to process, store, and analyze large volumes of data
+Data Visualization	Data Science and Machine Learning	data-visualization	Representation of data in visual formats such as charts, graphs, and maps
+Agile Methodologies	Software Engineering	agile-methodologies	Iterative and incremental approaches to software development that prioritize adaptability and customer satisfaction
+DevOps Practices	Software Engineering	devops-practices	Collaborative practices that bridge the gap between software development and IT operations
+Software Testing	Software Engineering	software-testing	Process of evaluating software quality and functionality through manual and automated tests
+Version Control	Software Engineering	version-control	Management of changes to documents, computer programs, large websites, and other collections of information
+Code Reviews	Software Engineering	code-reviews	Systematic examination of source code intended to find and fix mistakes overlooked in the initial development phase
+Continuous Integration/Continuous Deployment (CI/CD)	Software Engineering	ci-cd	Practices and tools that automate the process of integrating code changes into a shared repository and deploying them to production
+Algorithms	Computer Science Fundamentals	algorithms	Step-by-step procedure or formula for solving a problem, often used in computer science and mathematics
+Data Structures	Computer Science Fundamentals	data-structures	Way of organizing and storing data in a computer so that it can be accessed and modified efficiently
+Operating Systems	Computer Science Fundamentals	operating-systems	Software that manages computer hardware and provides common services for computer programs
+Computer Networks	Computer Science Fundamentals	computer-networks	Interconnected computers that can communicate with each other and share resources
+Databases	Computer Science Fundamentals	databases	Organized collection of data, typically stored and accessed electronically from a computer system
+Security and Cryptography	Computer Science Fundamentals	security-cryptography	Techniques and technologies used to protect data and communications from unauthorized access and manipulation
