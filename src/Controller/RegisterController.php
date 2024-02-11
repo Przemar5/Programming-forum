@@ -25,7 +25,6 @@ class RegisterController extends AbstractController
             $user->setPassword($password);
             $user->setCreatedAt();
 
-
             dump($user);
             die;
 
