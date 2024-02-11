@@ -36,6 +36,10 @@ class RegistrationController extends AbstractController
         LoginFormAuthenticator $authenticator, 
         FileUploader $fileUploader
     ): Response {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);

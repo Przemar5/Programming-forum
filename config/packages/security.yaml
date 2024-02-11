@@ -39,7 +39,7 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
         - { path: /topic/create$, roles: IS_AUTHENTICATED_FULLY }
         - { path: /topic/([0-9]+)/edit$, roles: ROLE_ADMIN }
         - { path: /topic/([0-9]+)/delete$, roles: ROLE_ADMIN }
