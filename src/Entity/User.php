@@ -16,13 +16,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity("login", message="There is already an account with this login")
- * @UniqueEntity("email", message="There is already an account with this email")
+ * @UniqueEntity({"login", "deleted_at"}, ignoreNull=true, message="There is already an account with this login")
+ * @UniqueEntity({"email", "deleted_at"}, ignoreNull=true, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
     use Timestamps;
     use SoftDelete;
+
+    public const DEFAULT_AVATAR = 'no_avatar.png';
 
     /**
      * @ORM\Id()
@@ -117,8 +119,6 @@ class User implements UserInterface
     {
         $this->posts = new ArrayCollection();
         $this->topics = new ArrayCollection();
-        $this->likedPosts = new ArrayCollection();
-        $this->dislikedPosts = new ArrayCollection();
         $this->ratings = new ArrayCollection();
     }
 
@@ -213,30 +213,6 @@ class User implements UserInterface
     public function setLogin(string $login): self
     {
         $this->login = $login;
-
-        return $this;
-    }
-
-    public function getLogged(): ?bool
-    {
-        return $this->logged;
-    }
-
-    public function setLogged(bool $logged): self
-    {
-        $this->logged = $logged;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }
@@ -373,58 +349,6 @@ class User implements UserInterface
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Post[]
-     */
-    public function getLikedPosts(): Collection
-    {
-        return $this->likedPosts;
-    }
-
-    public function addLikedPost(Post $likedPost): self
-    {
-        if (!$this->likedPosts->contains($likedPost)) {
-            $this->likedPosts[] = $likedPost;
-        }
-
-        return $this;
-    }
-
-    public function removeLikedPost(Post $likedPost): self
-    {
-        if ($this->likedPosts->contains($likedPost)) {
-            $this->likedPosts->removeElement($likedPost);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Post[]
-     */
-    public function getDislikedPosts(): Collection
-    {
-        return $this->dislikedPosts;
-    }
-
-    public function addDislikedPost(Post $dislikedPost): self
-    {
-        if (!$this->dislikedPosts->contains($dislikedPost)) {
-            $this->dislikedPosts[] = $dislikedPost;
-        }
-
-        return $this;
-    }
-
-    public function removeDislikedPost(Post $dislikedPost): self
-    {
-        if ($this->dislikedPosts->contains($dislikedPost)) {
-            $this->dislikedPosts->removeElement($dislikedPost);
-        }
 
         return $this;
     }

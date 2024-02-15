@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Entity\Topic;
 use App\Entity\Tag;
-use App\Form\PostCreateType;
+use App\Form\PostType;
 use App\Form\TopicType;
 use App\Form\TopicPostCreateType;
 use App\Repository\CategoryRepository;
@@ -114,10 +114,10 @@ class TopicController extends AbstractController
         $page = $request->query->get('page') ?? 1;
         $post = new Post();
 
-        $form = $this->createForm(PostCreateType::class, $post);
+        $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && !empty($user) && 
+        if ($form->isSubmitted() && $form->isValid() && $user && 
             (!$topic->getClosed() || $user->hasRole('ROLE_ADMIN'))) {
 
             $post->setAccepted($user->hasRole('ROLE_ADMIN'));
@@ -135,14 +135,48 @@ class TopicController extends AbstractController
         $posts = $topic->getPosts();
         $posts = $paginator->paginate($posts, $page, self::POSTS_PER_PAGE);
 
-        $request = null;
-
         return $this->render('topic/show.html.twig', [
             'topic' => $topic,
             'posts' => $posts,
             'bbcode' => new BBCode(),
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/post/create", name="topic_post_create", methods={"POST"})
+     */
+    public function createPost($id, Request $request, TopicRepository $topicRepo): Response
+    {
+        $topic = $topicRepo->findOneBy([
+            'id' => $id,
+            'accepted' => true,
+        ]);
+        
+        if (!$topic) {
+            throw $this->createNotFoundException();
+        }
+
+        $user = $this->getUser();
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid() && $user && 
+            (!$topic->getClosed() || $user->hasRole('ROLE_ADMIN'))) {
+            $post->setAccepted($user->hasRole('ROLE_ADMIN'));
+            $post->setCreatedAt();
+            $post->setTopic($topic);
+            $post->setUser($user);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            $this->addFlash('success', "You've added new post successfully.");
+        }
+
+        return $this->json(['success' => true]);
     }
 
     /**

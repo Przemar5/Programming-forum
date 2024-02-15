@@ -74,6 +74,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
+        if (!$user->isVerified()) {
+            throw new CustomUserMessageAuthenticationException('You must click confirmation email send in your mailbox.');
+        }
+
         return $user;
     }
 

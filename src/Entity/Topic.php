@@ -170,18 +170,15 @@ class Topic
 
     public function postsCount(): int
     {
-        return count($this->posts);
+        return $this->posts->count();
     }
 
     public function lastPost(): ?Post
     {
         $last = null;
 
-        foreach ($this->getPosts() as $post) {
-            if ($last === null) {
-                $last = $post;
-
-            } elseif ($post->getCreatedAt() > $last->getCreatedAt()) {
+        foreach ($this->posts as $post) {
+            if ($last === null || ($post->getCreatedAt() > $last->getCreatedAt())) {
                 $last = $post;
             }
         }

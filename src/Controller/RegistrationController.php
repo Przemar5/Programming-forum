@@ -57,7 +57,7 @@ class RegistrationController extends AbstractController
             $user->setCreatedAt();
 
             $file = $request->files->get('registration_form')['avatar'];
-            $filename = ($file) ? $fileUploader->uploadFile($file) : 'no_avatar.png';
+            $filename = ($file) ? $fileUploader->uploadFile($file) : User::DEFAULT_AVATAR;
             $user->setAvatar($filename);
 
             $entityManager = $this->getDoctrine()->getManager();

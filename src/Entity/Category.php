@@ -17,6 +17,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Category
 {
     use Timestamps;
+    use SoftDelete;
     
     /**
      * @ORM\Id()
@@ -111,18 +112,10 @@ class Category
      */
     public function getTopics(): Collection
     {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
+        $iterator = $this->topics->getIterator();
+        $iterator->uasort(fn($a, $b) => ($a->getId() < $b->getId()) ? 1 : -1);
         
-        $result = $em->getRepository(Topic::class)->findBy([
-            'category' => $this->id,
-            'accepted' => true,
-            'deleted_at' => null,
-        ], [
-            'id' => 'DESC',
-        ]);
-
-        return new ArrayCollection($result);
+        return new ArrayCollection(iterator_to_array($iterator));
     }
 
     public function addTopic(Topic $topic): self
@@ -165,14 +158,7 @@ class Category
      */
     public function getSubcategories(): Collection
     {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(Category::class)->findBy([
-            'parentCategory' => $this->id,
-        ]);
-
-        return new ArrayCollection($result);
+        return $this->subcategories;
     }
 
     public function addSubcategory(Category $subcategory): self
@@ -200,59 +186,34 @@ class Category
 
     public function topicsCount(): int
     {
-        $count = count($this->getTopics());
+        $count = $this->topics->count();
 
-        foreach ($this->getSubcategories() as $subcategory) {
+        foreach ($this->subcategories as $subcategory) {
             $count += $subcategory->topicsCount();
         }
 
-        return $count ?? 0;
+        return $count;
     }
 
     public function postsCount(): int
     {
         $count = 0;
 
-        foreach ($this->topics as $topic) {
-            $count = $topic->postsCount();
+        foreach ($this->getSubcategoriesAndTopics() as $entity) {
+            $count = $entity->postsCount();
         }
 
-        foreach ($this->getSubcategories() as $subcategory) {
-            
-            foreach ($subcategory->getTopics() as $topic) {
-                $count += $topic->postsCount();
-            }
-        }
-
-        return $count ?? 0;
+        return $count;
     }
 
     public function lastPost(): ?Post
     {
         $last = null;
 
-        foreach ($this->topics as $topic) {
-            $candidate = $topic->lastPost();
+        foreach ($this->getSubcategoriesAndTopics() as $entity) {
+            $candidate = $entity->lastPost();
             
-            if ($last === null) {
-                $last = $candidate;
-
-            } elseif ($candidate && 
-                $candidate->getCreatedAt() > $last->getCreatedAt()) {
-                
-                $last = $candidate;
-            }
-        }
-
-        foreach ($this->getSubcategories() as $subcategory) {
-            $candidate = $subcategory->lastPost();
-
-            if ($last === null) {
-                $last = $candidate;
-
-            } elseif ($candidate && 
-                $candidate->getCreatedAt() > $last->getCreatedAt()) {
-                
+            if ($last === null || ($candidate && $candidate->getCreatedAt() > $last->getCreatedAt())) {
                 $last = $candidate;
             }
         }
@@ -270,5 +231,10 @@ class Category
         $this->description = $description;
 
         return $this;
+    }
+
+    private function getSubcategoriesAndTopics(): array
+    {
+        return array_merge($this->subcategories->toArray(), $this->topics->toArray());
     }
 }

@@ -185,12 +185,10 @@ class UserController extends AbstractController
 
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
 
-            if ($user->getAvatar() !== self::DEFAULT_AVATAR) {
-                $fileUploader->deleteFile(self::AVATARS_DIRECTORY . $user->getAvatar(), true);
+            if ($user->getAvatar() !== User::DEFAULT_AVATAR) {
+                $fileUploader->deleteFile(self::AVATARS_DIRECTORY . $user->getAvatar());
             }
-            $user->setAvatar(self::DEFAULT_AVATAR);
-            $user->setLogin($user->getLogin().'_deleted_'.time());
-            $user->setEmail($user->getEmail().'_deleted_'.time());
+            $user->setAvatar(User::DEFAULT_AVATAR);
             $user->setDeletedAt();
 
             $this->getDoctrine()->getManager()->flush();

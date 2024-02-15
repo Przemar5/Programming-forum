@@ -28,7 +28,7 @@
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="my-3 mx-2">
         	<h3>Your respond</h3>
-        	{% include 'post/_form.html.twig' %}
+        	{% include 'post/_form.html.twig' with {'attrs': {'id': 'formCreatePost', 'action': path('topic_post_create', {id: topic.id})}} %}
         </div>
     {% endif %}
 {% endblock %}
@@ -39,11 +39,11 @@
     <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
 	
 	<script>
-		CKEDITOR.replace('post_create_content');
+		CKEDITOR.replace('post_content')
 
         $(document).ready(function() {
-            $('#tags').multiselect();
-        });
+            $('#tags').multiselect()
+        })
 	</script>
 
     <script>
@@ -81,6 +81,18 @@
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: (data) => updateRatingPanel(data),
+                    fail: (data) => console.error(data)
+                })
+            })
+
+            $('#formCreatePost').on('submit', function (e) {
+                e.preventDefault()
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: $(this).serialize(),
+                    success: (data) => window.location.reload(),
                     fail: (data) => console.error(data)
                 })
             })

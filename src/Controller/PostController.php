@@ -42,7 +42,10 @@ class PostController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $post->setAccepted(false);
+            $post->setAccepted($user->hasRole('ROLE_ADMIN'));
+            $post->setCreatedAt();
+            $post->setTopic($topic);
+            $post->setUser($user);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);

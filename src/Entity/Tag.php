@@ -64,17 +64,6 @@ class Tag
     public function getTopics(): Collection
     {
         return $this->topics;
-
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(TopicTag::class)->findBy([
-            'tag' => $this->id,
-        ]);
-
-        dump($result);die;
-
-        return new ArrayCollection($result);
     }
 
     public function addTopic(Topic $topic): self
@@ -97,7 +86,7 @@ class Tag
 
     public function topicsCount(): int
     {
-        return count($this->getTopics());
+        return $this->topics->count();
     }
 
     public function postsCount(): int

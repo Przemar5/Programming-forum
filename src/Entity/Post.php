@@ -66,8 +66,6 @@ class Post
 
     public function __construct()
     {
-        $this->likes = new ArrayCollection();
-        $this->dislikes = new ArrayCollection();
         $this->ratings = new ArrayCollection();
     }
 
@@ -169,18 +167,6 @@ class Post
     public function setAccepted(?bool $accepted): self
     {
         $this->accepted = $accepted;
-
-        return $this;
-    }
-
-    public function getPreviousVersion(): ?string
-    {
-        return $this->previousVersion;
-    }
-
-    public function setPreviousVersion(string $previousVersion): self
-    {
-        $this->previousVersion = $previousVersion;
 
         return $this;
     }

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Services\EntityHelper;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -18,10 +19,11 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $users = EntityHelper::getEntitiesFromCsvFile('App\\Entity\\User', __DIR__ . '/users.csv');
+        $users = EntityHelper::getEntitiesFromCsvFile(User::class, __DIR__ . '/users.csv');
 
         foreach ($users as $user) {
             $user->setPassword($this->passwordEncoder->encodePassword($user, bin2hex(random_bytes(20))));
+            $user->setAvatar(User::DEFAULT_AVATAR);
             $user->setCreatedAt();
             $manager->persist($user);
         }

@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Post;
 use App\Entity\Topic;
-use App\Form\PostCreateType;
+use App\Form\PostType;
 use App\Form\TopicType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +18,7 @@ class TopicPostCreateType extends AbstractType
             ->add('topic', TopicType::class, [
                 'label' => false,
             ])
-            ->add('post', PostCreateType::class, [
+            ->add('post', PostType::class, [
                 'label' => false,
             ])
         ;
