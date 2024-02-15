@@ -18,3 +18,4 @@
 
 /docker-compose.yaml
 /docker_database
+/start.sh

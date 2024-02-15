@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Form\CurrentUserPasswordType;
+use App\Validator\CurrentUserPassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,6 +20,7 @@ class UserType extends AbstractType
             ->add('login')
             ->add('location')
             ->add('avatar', FileType::class, [
+                'mapped' => false,
                 'data_class' => null,
                 'required' => false,
                 'constraints' => [
@@ -29,6 +33,9 @@ class UserType extends AbstractType
                         ],
                     ]),
                 ],
+            ])
+            ->add('password', CurrentUserPasswordType::class, [
+                'mapped' => false,
             ])
         ;
     }

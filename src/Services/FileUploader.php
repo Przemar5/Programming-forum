@@ -19,19 +19,23 @@ class FileUploader
 		$this->filesystem = new Filesystem();
 	}
 
-	public function uploadFile(UploadedFile $file)
+	public function generateFilename(UploadedFile $file): string
 	{
-        $filename = time() . '_' . uniqid() . '.' . $file->guessClientExtension();
+		return time() . '_' . uniqid() . '.' . $file->guessClientExtension();
+	}
 
-        $file->move(
-            $this->container->getParameter('avatar_path'),
-            $filename,
-        );
+	public function uploadFile(UploadedFile $file, ?string $filename = null)
+	{
+		if (!$filename) {
+	        $filename = $this->generateFilename($file);
+	    }
+
+        $file->move($this->container->getParameter('avatar_path'), $filename);
 
         return $filename;
 	}
 
-	public function deleteFile(string $path, bool $isPublic)
+	public function deleteFile(string $path)
     {
     	global $kernel;
 

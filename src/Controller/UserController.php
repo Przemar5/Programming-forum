@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Form\UserPasswordType;
 use App\Repository\UserRepository;
 use App\Services\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,13 @@ class UserController extends AbstractController
 {
     private const AVATARS_DIRECTORY = '/public/images/avatars/';
     private const DEFAULT_AVATAR = 'no_avatar.png';
+
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @Route("/", name="user_index", methods={"GET"})
@@ -70,25 +78,43 @@ class UserController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $oldAvatar = $user->getAvatar();
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->beginTransaction();
 
-            $file = $request->files->get('user')['avatar'];
+            $oldAvatarFilename = $user->getAvatar();
+            $newAvatarFilename = null;
 
-            if ($file) {
-                if ($user->getAvatar() !== self::DEFAULT_AVATAR) {
-                    $fileUploader->deleteFile(self::AVATARS_DIRECTORY . $oldAvatar, true);
+            try {
+                $file = $request->files->get('user')['avatar'];
+                if ($file) {
+                    $newAvatarFilename = $fileUploader->generateFilename($file);
+                    $user->setAvatar($newAvatarFilename);
+
+                    $this->getDoctrine()->getManager()->flush();
+
+                    $fileUploader->uploadFile($file, $newAvatarFilename);
+
+                    if ($oldAvatarFilename !== self::DEFAULT_AVATAR) {
+                        $fileUploader->deleteFile(self::AVATARS_DIRECTORY . $oldAvatarFilename);
+                    }
+
+                } else {
+                    $this->getDoctrine()->getManager()->flush();
                 }
 
-                $filename = ($file) ? $fileUploader->uploadFile($file) : self::DEFAULT_AVATAR;
-                $user->setAvatar($filename);
-            }
+                $this->entityManager->commit();
 
-            $this->getDoctrine()->getManager()->flush();
+            } catch (\Exception $e) {
+                if ($newAvatarFilename) {
+                    $fileUploader->deleteFile(self::AVATARS_DIRECTORY . $newAvatarFilename);
+                }
+                $this->entityManager->rollBack();
+
+                throw $e;
+            }
 
             return $this->redirectToRoute('user_show', [
                 'id' => $user->getId(),
@@ -119,13 +145,12 @@ class UserController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(UserPasswordType::class, $user);
+        $form = $this->createForm(UserPasswordType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $plainPassword = $form->getData('password')->getPassword();
-            $encoded = $encoder->encodePassword($user, $plainPassword);
-            $user->setPassword($encoded);
+            $plainPassword = $form->get('password')->getData();
+            $user->setPassword($encoder->encodePassword($user, $plainPassword));
 
             $this->getDoctrine()->getManager()->flush();
 
