@@ -261,16 +261,9 @@ class User implements UserInterface
     /**
      * @return Collection|Post[]
      */
-    public function getPosts(): array
+    public function getPosts(): Collection
     {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $posts = $em->getRepository(Post::class)->findBy([
-            'user' => $this,
-        ]);
-
-        return $posts;
+        return $this->posts;
     }
 
     public function addPost(Post $post): self
@@ -353,23 +346,11 @@ class User implements UserInterface
 
     public function getPoints(): int
     {
-        $posts = $this->getPosts();
-
-        if ($posts) {
-            $points = array_map(fn($p) => $p->getPoints(), $posts);
-            $points = array_sum($points);
-
-            return $points;
-        }
-
-        return 0;
-    }
-
-    public function setPoints(int $points): self
-    {
-        $this->points = $points;
-
-        return $this;
+        return array_reduce(
+            $this->posts->map(fn($p) => $p->getPoints())->toArray(),
+            fn($a, $b) => $a + $b,
+            0
+        );
     }
 
     public function getLevel(): ?string

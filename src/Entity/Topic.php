@@ -104,17 +104,7 @@ class Topic
      */
     public function getPosts(): Collection
     {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(Post::class)->findBy([
-            'topic' => $this,
-            'accepted' => true,
-        ], [
-            'id' => 'ASC',
-        ]);
-
-        return new ArrayCollection($result);
+        return $this->posts;
     }
 
     public function addPost(Post $post): self

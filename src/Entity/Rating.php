@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Rating
 {
+    public const LIKE = 1;
+    public const DISLIKE = -1;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

@@ -112,22 +112,6 @@ class Post
         return $this;
     }
 
-    /**
-     * @return Collection|Rating[]
-     */
-    public function getRatings($type = 1): Collection
-    {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(Rating::class)->findBy([
-            'post' => $this,
-            'points' => $type,
-        ]);
-
-        return new ArrayCollection($result);
-    }
-
     public function addRating(Rating $rating): self
     {
         if (!$this->ratings->contains($rating)) {
@@ -151,51 +135,30 @@ class Post
         return $this;
     }
 
-    public function likedBy(User $user): bool
+    public function isRatedBy(User $user, int $rateType): bool
     {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(Rating::class)->findBy([
-            'post' => $this,
-            'user' => $user,
-            'points' => 1,
-        ]);
-
-        return ($result) ? true : false;
+        return (bool) $this->ratings
+            ->filter(fn($r) => $r->getUser()->getId() === $user->getId() && $r->getPoints() === $rateType)
+            ->count();
     }
 
-    public function dislikedBy(User $user): bool
+    public function isLikedBy(User $user): bool
     {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(Rating::class)->findBy([
-            'post' => $this,
-            'user' => $user,
-            'points' => -1,
-        ]);
+        return $this->isRatedBy($user, Rating::LIKE);
+    }
 
-        return ($result) ? true : false;
+    public function isDislikedBy(User $user): bool
+    {
+        return $this->isRatedBy($user, Rating::DISLIKE);
     }
 
     public function getPoints(): int
     {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(Rating::class)->findBy([
-            'post' => $this,
-        ]);
-
-        if ($result) {
-            $points = array_map(fn($r) => $r->getPoints(), $result);
-            $points = array_sum($points);
-
-            return $points;
-        }
-
-        return 0;
+        return array_reduce(
+            $this->ratings->map(fn($r) => $r->getPoints())->toArray(), 
+            fn($a, $b) => $a + $b,
+            0
+        );
     }
 
     public function getAccepted(): ?bool
@@ -208,18 +171,6 @@ class Post
         $this->accepted = $accepted;
 
         return $this;
-    }
-
-    public function postsToAccept(): Collection
-    {
-        global $kernel;
-        $em = $kernel->getContainer()->get('doctrine')->getManager();
-        
-        $result = $em->getRepository(Post::class)->findBy([
-            'accepted' => false,
-        ]);
-
-        return new ArrayCollection($result);
     }
 
     public function getPreviousVersion(): ?string

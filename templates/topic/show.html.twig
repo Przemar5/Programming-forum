@@ -51,17 +51,18 @@
             $('.rate-form').on('submit', function (e) {
                 e.preventDefault()
 
-                const updateRateBtn = (btn, rate) => (rate > 0)
-                                        ? btn.attr('style', 'color: #333333 !important') 
-                                        : btn.attr('style', 'color: #9a9a9a !important')
+                const updateRateBtn = (btn, rate) => {
+                    let color = (rate > 0) ? '#333333' : '#9a9a9a'
+                    btn.attr('style', `color: ${color} !important`)
+                }
                 
                 const updateUserPoints = (userId, points) => {
-                    console.log(userId)
-                    console.log(points)
                     $('.post__user--' + userId + ' .post-user__points-ammount').text(points)
                 }
                 
-                const updatePostPoints = (container, points) => container.text('Points: ' + points)
+                const updatePostPoints = (container, points) => {
+                    container.text('Points: ' + points)
+                }
 
                 const updateRatingPanel = (data) => {
                     let rating = $(this).closest('.post__rating')
@@ -79,8 +80,8 @@
                     url: $(this).attr('action'),
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
-                    success: (data) => updateRatingPanel(JSON.parse(data)),
-                    fail: (data) => console.log(data)
+                    success: (data) => updateRatingPanel(data),
+                    fail: (data) => console.error(data)
                 })
             })
         })

@@ -54,7 +54,6 @@ class RegistrationController extends AbstractController
             );
 
             $user->setLevel('new');
-            $user->setPoints(0);
             $user->setCreatedAt();
 
             $file = $request->files->get('registration_form')['avatar'];

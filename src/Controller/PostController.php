@@ -70,7 +70,7 @@ class PostController extends AbstractController
 
         $oldUser = $post->getUser();
         $user = $security->getUser();
-        
+
         if (!$post || $post->getDeletedAt()) {
             throw $this->createNotFoundException();
         }
@@ -217,15 +217,13 @@ class PostController extends AbstractController
         }
 
         if ($request->isXmlHttpRequest() || $request->query->get('showJson') == 1) {
-            return new Response(
-                json_encode([
-                    'liked' => $post->likedBy($user),
-                    'disliked' => $post->dislikedBy($user),
-                    'points' => $post->getPoints(),
-                    'userId' => $post->getUser()->getId(),
-                    'userPoints' => $post->getUser()->getPoints(),
-                ])
-            );
+            return $this->json([
+                'liked' => $post->isLikedBy($user),
+                'disliked' => $post->isDislikedBy($user),
+                'points' => $post->getPoints(),
+                'userId' => $post->getUser()->getId(),
+                'userPoints' => $post->getUser()->getPoints(),
+            ]);
 
         } else {
             return $this->redirect($request->headers->get('referer'));

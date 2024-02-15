@@ -93,8 +93,13 @@ class TopicController extends AbstractController
     /**
      * @Route("/{id}", name="topic_show", methods={"GET", "POST"})
      */
-    public function show($id, Request $request, TopicRepository $topicRepo, Security $security, PaginatorInterface $paginator): Response
-    {
+    public function show(
+        $id, 
+        Request $request, 
+        TopicRepository $topicRepo, 
+        Security $security, 
+        PaginatorInterface $paginator
+    ): Response {
         $topic = $topicRepo->findOneBy([
             'id' => $id,
             'accepted' => true,
@@ -115,9 +120,7 @@ class TopicController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !empty($user) && 
             (!$topic->getClosed() || $user->hasRole('ROLE_ADMIN'))) {
 
-            $accept = ($user->hasRole('ROLE_ADMIN')) ? true : false;
-
-            $post->setAccepted($accept);
+            $post->setAccepted($user->hasRole('ROLE_ADMIN'));
             $post->setCreatedAt();
             $post->setTopic($topic);
             $post->setUser($user);
@@ -125,6 +128,8 @@ class TopicController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Your post have been submitted and is waiting for acceptance.');
         }
         
         $posts = $topic->getPosts();
