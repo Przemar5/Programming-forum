@@ -174,9 +174,16 @@ class TopicController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', "You've added new post successfully.");
+
+            return $this->json(['success' => true]);
+        }
+        
+        $errors = [];
+        foreach ($form->getErrors(true) as $key => $error) {
+            $errors[$error->getOrigin()->getName()] = $error->getMessage();
         }
 
-        return $this->json(['success' => true]);
+        return $this->json(['errors' => $errors], 400);
     }
 
     /**

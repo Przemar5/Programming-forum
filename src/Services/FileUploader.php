@@ -37,18 +37,15 @@ class FileUploader
 
 	public function deleteFile(string $path)
     {
-    	global $kernel;
-
-    	$fullPath = $kernel->getProjectDir().$path;
+    	$fullPath = $this->container->getParameter('root_dir') . $path;
     	
     	if (!$this->filesystem->exists($fullPath)) {
     		return;
     	}
 
         $result = $this->filesystem->remove($fullPath);
-
         if ($result === false) {
-            throw new \Exception(sprintf('Error deleting "%s"', $path));
+            throw new \Exception("Error deleting '$path'");
         }
     }
 }

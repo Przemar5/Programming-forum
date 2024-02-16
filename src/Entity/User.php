@@ -12,12 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
- * @UniqueEntity({"login", "deleted_at"}, ignoreNull=true, message="There is already an account with this login")
- * @UniqueEntity({"email", "deleted_at"}, ignoreNull=true, message="There is already an account with this email")
+ * @UniqueEntity(fields={"login", "deleted_at"}, ignoreNull=true, message="There is already an account with this login")
+ * @UniqueEntity(fields={"email", "deleted_at"}, ignoreNull=true, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -28,10 +30,11 @@ class User implements UserInterface
 
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="doctrine.uuid_generator")
      */
-    private $id;
+    private ?Uuid $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -122,7 +125,7 @@ class User implements UserInterface
         $this->ratings = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

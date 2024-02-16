@@ -29,6 +29,8 @@ class Post
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotNull(message="This field is required.")
+     * @Assert\NotBlank(message="This field is required.")
      * @Assert\Regex("/^[\w\S\- \!@#$%\^&\*\+=?\|,\.\/:;<>\{\}\(\)\[\]]+$/")
      */
     private $content;

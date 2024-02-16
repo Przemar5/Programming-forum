@@ -42,12 +42,8 @@
 		CKEDITOR.replace('post_content')
 
         $(document).ready(function() {
-            $('#tags').multiselect()
-        })
-	</script>
+            // $('#tags').multiselect()
 
-    <script>
-        $(document).ready(function () {
             $('.rate-form').on('submit', function (e) {
                 e.preventDefault()
 
@@ -88,13 +84,24 @@
             $('#formCreatePost').on('submit', function (e) {
                 e.preventDefault()
 
+                CKEDITOR.instances['post_content'].updateElement()
+
                 $.ajax({
                     url: $(this).attr('action'),
                     method: $(this).attr('method'),
                     data: $(this).serialize(),
                     success: (data) => window.location.reload(),
-                    fail: (data) => console.error(data)
+                    fail: (data) => {console.log(data); alert(data)}
                 })
+                    .done(response => window.location.reload())
+                    .catch(response => {
+                        let errors = response.responseJSON.errors
+                        let message = 'An error occured'
+                        for (let key in errors) {
+                            message += `\n${key}: ${errors[key]}`
+                        }
+                        alert(message)
+                    })
             })
         })
     </script>

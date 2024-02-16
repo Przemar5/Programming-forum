@@ -40,23 +40,25 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/logout, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /topic/create$, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /topic/([0-9]+)/edit$, roles: ROLE_ADMIN }
-        - { path: /topic/([0-9]+)/delete$, roles: ROLE_ADMIN }
-        - { path: /post/create$, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /post/([0-9]+)/edit$, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /post/([0-9]+)/delete$, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /post/([0-9]+)/rate$, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /post/([0-9]+)/accept$, roles: ROLE_ADMIN }
-        - { path: /post/([0-9]+)/remove$, roles: ROLE_ADMIN }
-        - { path: /category/create$, roles: ROLE_ADMIN }
-        - { path: /category/([0-9]+)/edit$, roles: ROLE_ADMIN }
-        - { path: /category/([0-9]+)/delete$, roles: ROLE_ADMIN }
-        - { path: /tag/([0-9]+)/create$, roles: ROLE_ADMIN }
-        - { path: /tag/([0-9]+)/edit$, roles: ROLE_ADMIN }
-        - { path: /tag/([0-9]+)/delete$, roles: ROLE_ADMIN }
-        - { path: /user/([0-9]+)/edit$, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /user/([0-9]+)/delete$, roles: IS_AUTHENTICATED_FULLY }
-        - { path: /dashboard$, roles: ROLE_ADMIN }
+        - { path: ^/topic/create$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/topic/([0-9]+)/post/create$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/topic/([0-9]+)/edit$, roles: ROLE_ADMIN }
+        - { path: ^/topic/([0-9]+)/delete$, roles: ROLE_ADMIN }
+        - { path: ^/post/create$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/post/([0-9]+)/edit$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/post/([0-9]+)/delete$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/post/([0-9]+)/rate$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/post/([0-9]+)/accept$, roles: ROLE_ADMIN }
+        - { path: ^/post/([0-9]+)/remove$, roles: ROLE_ADMIN }
+        - { path: ^/category/create$, roles: ROLE_ADMIN }
+        - { path: ^/category/([0-9]+)/edit$, roles: ROLE_ADMIN }
+        - { path: ^/category/([0-9]+)/delete$, roles: ROLE_ADMIN }
+        - { path: ^/tag/([0-9]+)/create$, roles: ROLE_ADMIN }
+        - { path: ^/tag/([0-9]+)/edit$, roles: ROLE_ADMIN }
+        - { path: ^/tag/([0-9]+)/delete$, roles: ROLE_ADMIN }
+        - { path: ^/user/$, roles: ROLE_ADMIN }
+        - { path: ^/user/([\d\w\-]+)/edit$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/user/([\d\w\-]+)/delete$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/dashboard$, roles: ROLE_ADMIN }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
