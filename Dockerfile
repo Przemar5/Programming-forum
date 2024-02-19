@@ -1,4 +1,4 @@
-FROM richarvey/nginx-php-fpm:2.3.1
+FROM richarvey/nginx-php-fpm:1.5.7
 
 COPY . .
 
@@ -18,3 +18,4 @@ ENV LOG_CHANNEL stderr
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 CMD ["/start.sh"]
+
