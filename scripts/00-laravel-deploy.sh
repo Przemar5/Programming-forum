@@ -6,7 +6,7 @@ composer clear-cache
 composer diagnose
 # composer reinstall
 composer install --no-dev -vvv --working-dir=/var/www/html
-# composer dump-autoload
+composer dump-autoload
 # chmod o+w
 ls -l
 
