@@ -4,8 +4,8 @@ composer global require hirak/prestissimo
 cd /var/www/html
 composer clear-cache
 composer diagnose
-composer reinstall
-composer reinstall --no-dev --no-cache --working-dir=/var/www/html
+# composer reinstall
+composer install --no-dev --no-cache --working-dir=/var/www/html
 
 echo "Running migrations..."
 php bin/console do:mi:mi
