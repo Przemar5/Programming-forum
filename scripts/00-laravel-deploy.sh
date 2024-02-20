@@ -7,7 +7,7 @@ composer diagnose
 # composer reinstall
 composer install --no-dev -vvv --working-dir=/var/www/html
 # composer dump-autoload
-chmod o+w
+# chmod o+w
 ls -l
 
 echo "Running migrations..."
