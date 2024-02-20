@@ -2,7 +2,7 @@
 echo "Running composer"
 composer global require hirak/prestissimo
 cd /var/www/html
-composer install --no-dev
+composer install
 
 echo "Running migrations..."
 php bin/console do:mi:mi
