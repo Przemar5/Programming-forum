@@ -2,6 +2,7 @@
 echo "Running composer"
 composer global require hirak/prestissimo
 cd /var/www/html
+composer diagnose
 composer install
 
 echo "Running migrations..."
