@@ -6,6 +6,8 @@ composer clear-cache
 composer diagnose
 # composer reinstall
 composer install --no-dev -vvv --working-dir=/var/www/html
+composer dump-autoload
+ls -l vendor/
 
 echo "Running migrations..."
 php bin/console do:mi:mi
