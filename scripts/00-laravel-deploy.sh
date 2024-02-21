@@ -5,10 +5,12 @@ cd /var/www/html
 composer clear-cache
 cat composer.json
 composer update
+chmod a+w -R vendor
 # composer update symfonycasts/reset-password-bundle
 composer install --no-dev -vvv --working-dir=/var/www/html
+chmod a+w -R vendor
 composer dump-autoload
-# chmod o+w
+chmod a+w -R vendor
 ls -l
 ls -l vendor/
 
