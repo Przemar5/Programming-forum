@@ -4,7 +4,6 @@ composer global require hirak/prestissimo
 cd /var/www/html
 composer clear-cache
 cat composer.json
-composer update
 chmod a+w -R vendor
 # composer update symfonycasts/reset-password-bundle
 composer install --no-dev -vvv --working-dir=/var/www/html
