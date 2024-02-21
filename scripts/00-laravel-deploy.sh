@@ -6,6 +6,8 @@ composer clear-cache
 cat composer.json
 chmod a+w -R vendor
 # composer update symfonycasts/reset-password-bundle
+composer require hirak/prestissimo
+ls -l vendor
 composer install --no-dev -vvv --working-dir=/var/www/html
 chmod a+w -R vendor
 composer dump-autoload
