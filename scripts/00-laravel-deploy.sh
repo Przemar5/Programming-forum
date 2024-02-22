@@ -19,7 +19,7 @@ composer clear-cache
 # echo "Test:"
 # php -d memory_limit=-1 /usr/bin/composer require chriskonnertz/bbcode --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "All:"
-php -d memory_limit=-1 /usr/bin/composer install --no-plugins --profile --no-scripts --no-interaction -vv --working-dir=/var/www/html
+php -d memory_limit=-1 /usr/bin/composer install --no-plugins --profile --no-scripts --no-interaction -v --working-dir=/var/www/html
 # echo "Which composer"
 # which composer
 # chmod a+w -R vendor
