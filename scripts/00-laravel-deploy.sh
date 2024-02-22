@@ -17,10 +17,10 @@ php -r "echo ini_get('memory_limit').PHP_EOL;"
 # echo "Error handler:"
 # php -d memory_limit=-1 /usr/bin/composer require vanilla/nbbc --no-cache --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "Test:"
-php -d memory_limit=-1 /usr/bin/composer require chriskonnertz/bbcode --no-cache --no-scripts --no-interaction -vvv --working-dir=/var/www/html
+# php -d memory_limit=-1 /usr/bin/composer require chriskonnertz/bbcode --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "All:"
-php -d memory_limit=-1 /usr/bin/composer install --no-cache --no-plugins --profile --no-scripts --no-interaction -vvv --working-dir=/var/www/html
-echo "Which composer"
+php -d memory_limit=-1 /usr/bin/composer install --no-plugins --profile --no-scripts --no-interaction -vvv --working-dir=/var/www/html
+# echo "Which composer"
 which composer
 # chmod a+w -R vendor
 # composer dump-autoload
@@ -30,5 +30,7 @@ ls -l
 ls -l vendor/
 
 echo "Running migrations..."
-php bin/console do:mi:mi
-php bin/console do:fi:lo
+# php bin/console do:mi:mi
+# php bin/console do:fi:lo
+
+bash
