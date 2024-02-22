@@ -14,10 +14,10 @@ ls -l vendor
 # rm -r vendor
 echo "Memory:"
 php -r "echo ini_get('memory_limit').PHP_EOL;"
-echo "Error handler:"
-php -d memory_limit=-1 /usr/bin/composer require symfony/error-handler --no-cache --no-scripts --no-interaction -vvv --working-dir=/var/www/html
+# echo "Error handler:"
+# php -d memory_limit=-1 /usr/bin/composer require vanilla/nbbc --no-cache --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "Test:"
-php -d memory_limit=-1 /usr/bin/composer require symfony/process --no-cache --no-scripts --no-interaction -vvv --working-dir=/var/www/html
+php -d memory_limit=-1 /usr/bin/composer require vanilla/nbbc --no-cache --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "All:"
 php -d memory_limit=-1 /usr/bin/composer install --no-cache --no-plugins --profile --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "Which composer"
