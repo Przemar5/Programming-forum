@@ -14,7 +14,7 @@ ls -l vendor
 # rm -r vendor
 echo "Memory:"
 php -r "echo ini_get('memory_limit').PHP_EOL;"
-php -d memory_limit=-1 /usr/bin/composer install --no-cache --no-dev --no-interaction -vvv --working-dir=/var/www/html
+php -d memory_limit=-1 /usr/bin/composer install --no-cache --no-dev --no-plugins --profile --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "Which composer"
 which composer
 # chmod a+w -R vendor
