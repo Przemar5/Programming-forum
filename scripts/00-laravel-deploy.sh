@@ -9,9 +9,10 @@ chmod a+w -R vendor
 echo "composer require -vvv hirak/prestissimo"
 composer require -vvv --no-interaction hirak/prestissimo
 ls -l vendor
+rm -r vendor
 composer install --no-dev --no-interaction -vvv --working-dir=/var/www/html
 chmod a+w -R vendor
-composer dump-autoload
+# composer dump-autoload
 
 chmod a+w -R vendor
 ls -l
