@@ -6,10 +6,6 @@
         "ext-iconv": "*",
         "chriskonnertz/bbcode": "^1.1",
         "composer/package-versions-deprecated": "1.10.99.1",
-        "doctrine/annotations": "^1.0",
-        "doctrine/doctrine-bundle": "^2.1",
-        "doctrine/doctrine-migrations-bundle": "^3.0",
-        "doctrine/orm": "^2.7",
         "vanilla/nbbc": "^2.2"
     },
     "require-dev": {
