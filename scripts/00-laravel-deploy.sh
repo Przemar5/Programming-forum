@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Running composer"
-# composer global require hirak/prestissimo
+composer global require hirak/prestissimo
 # cd /var/www/html
 # composer clear-cache
 # cat composer.json
