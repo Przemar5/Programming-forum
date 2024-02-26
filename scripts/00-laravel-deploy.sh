@@ -9,7 +9,7 @@ composer install --working-dir=/var/www/html
 # ls -l vendor/
 
 echo "Running migrations..."
-php bin/console do:mi:mi
+# php bin/console do:mi:mi
 # php bin/console do:fi:lo
 
 # bash
