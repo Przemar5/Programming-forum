@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 echo "Running composer"
+composer --version
 # composer global require hirak/prestissimo
 # cd /var/www/html
 # composer clear-cache
@@ -18,9 +19,10 @@ echo "Running composer"
 # php -d memory_limit=-1 /usr/bin/composer require vanilla/nbbc --no-cache --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 # echo "Test:"
 # php -d memory_limit=-1 /usr/bin/composer require chriskonnertz/bbcode --no-scripts --no-interaction -vvv --working-dir=/var/www/html
-echo "All:"
+# echo "All:"
 # composer install --help
-php -d max_execution_time=-1 /usr/bin/composer install -vvv --working-dir=/var/www/html
+composer install --working-dir=/var/www/html
+# php -d max_execution_time=-1 /usr/bin/composer install -vvv --working-dir=/var/www/html
 # echo "Which composer"
 # which composer
 # chmod a+w -R vendor
@@ -28,8 +30,8 @@ php -d max_execution_time=-1 /usr/bin/composer install -vvv --working-dir=/var/w
 # ls composer.lock
 
 # chmod a+w -R vendor
-# ls -l
-# ls -l vendor/
+ls -l
+ls -l vendor/
 
 # echo "Running migrations..."
 # php bin/console do:mi:mi

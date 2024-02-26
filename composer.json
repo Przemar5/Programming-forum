@@ -4,7 +4,6 @@
     "require": {
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "composer-runtime-api": "^2",
         "chriskonnertz/bbcode": "^1.1",
         "composer/package-versions-deprecated": "1.10.99.1",
         "doctrine/annotations": "^1.0",
