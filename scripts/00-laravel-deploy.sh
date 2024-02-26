@@ -20,7 +20,7 @@ echo "Running composer"
 # php -d memory_limit=-1 /usr/bin/composer require chriskonnertz/bbcode --no-scripts --no-interaction -vvv --working-dir=/var/www/html
 echo "All:"
 # composer install --help
-# php -d max_execution_time=-1 /usr/bin/composer install --no-dev -vvv --working-dir=/var/www/html
+php -d max_execution_time=-1 /usr/bin/composer install -vvv --working-dir=/var/www/html
 # echo "Which composer"
 # which composer
 # chmod a+w -R vendor
