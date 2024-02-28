@@ -10,17 +10,15 @@ require dirname(__DIR__).'/vendor/autoload.php';
 
 try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
-} catch (\Exception $e) {
-    // dd($e);
-}
+} catch (\Exception $e) {}
 
-dd(5678);
+dd(123);
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
     Debug::enable();
 }
-dd(5678);
+dd(12345678);
 
 if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? false) {
     Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
