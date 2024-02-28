@@ -9,9 +9,9 @@ require dirname(__DIR__).'/vendor/autoload.php';
 
 
 try {
-    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
+    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
 } catch (\Exception $e) {
-    dd(1234);
+    dd($e);
 }
 
 dd(5678);
