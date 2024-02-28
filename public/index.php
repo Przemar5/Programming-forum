@@ -11,10 +11,10 @@ require dirname(__DIR__).'/vendor/autoload.php';
 try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 } catch (\Exception $e) {
-    dd(123);
+    dd(1234);
 }
 
-dd(456);
+dd(5678);
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
