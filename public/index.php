@@ -12,12 +12,13 @@ try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
 } catch (\Exception $e) {}
 
-dd(123);
+// dd(123);
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
-
+dump(1);
     Debug::enable();
 }
+dump(2);
 dd(12345678);
 
 if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? false) {
