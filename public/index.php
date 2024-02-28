@@ -7,20 +7,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-try {
-    throw new \Exception("Hello!");
+
+    // throw new \Exception("Hello!");
     dd(123);
 try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 } catch (\Exception $e) {}
 
-    dd(123);
+try {
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
     Debug::enable();
 }
-dd(123);
+
 if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? false) {
     Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
 }
