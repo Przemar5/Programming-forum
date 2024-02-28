@@ -12,6 +12,7 @@ try {
 } catch (\Exception $e) {}
 
 try {
+    dd(123);
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
