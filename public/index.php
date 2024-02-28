@@ -14,7 +14,6 @@ try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 } catch (\Exception $e) {}
 
-try {
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
@@ -34,6 +33,3 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
-} catch($e) {
-    dd($e);
-}
