@@ -8,13 +8,13 @@ use Symfony\Component\HttpFoundation\Request;
 require dirname(__DIR__).'/vendor/autoload.php';
 
 
-// try {
-//     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
-// } catch (\Exception $e) {
-//     dd($e);
-// }
+try {
+    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
+} catch (\Exception $e) {
+    // dd($e);
+}
 
-// dd(5678);
+dd(5678);
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
