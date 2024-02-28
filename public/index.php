@@ -11,6 +11,7 @@ try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 } catch (\Exception $e) {}
 
+try {
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 
@@ -25,7 +26,6 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts([$trustedHosts]);
 }
 
-try {
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
