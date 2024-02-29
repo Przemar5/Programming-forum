@@ -33,7 +33,7 @@ $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $request = Request::createFromGlobals();
 // dump(4);
 $response = $kernel->handle($request);
-// dump(5);
+dump(5);
 $response->send();
 // dump(6);
 $kernel->terminate($request, $response);
