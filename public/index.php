@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-
+dd(123);
 try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
 } catch (\Exception $e) {}
