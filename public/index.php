@@ -12,7 +12,7 @@ try {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
 } catch (\Exception $e) {}
 
-try {
+// try {
 dd(123);
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
@@ -37,6 +37,6 @@ dump(5);
 // $response->send();
 dump(6);
 // $kernel->terminate($request, $response);
-} catch (\Exception $e) {
-    dd($e);
-}
+// } catch (\Exception $e) {
+//     dd($e);
+// }
