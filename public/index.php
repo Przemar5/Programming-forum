@@ -34,9 +34,9 @@ $request = Request::createFromGlobals();
 dump(4);
 $response = $kernel->handle($request);
 dump(5);
-$response->send();
+// $response->send();
 dump(6);
-$kernel->terminate($request, $response);
+// $kernel->terminate($request, $response);
 } catch (\Exception $e) {
     dd($e);
 }
