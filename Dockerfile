@@ -18,9 +18,5 @@ ENV LOG_CHANNEL stderr
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN curl --insecure https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
-#RUN curl --insecure https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=1.10.27
-#RUN composer --version
-#RUN echo 'Hello!'
-
 
 CMD ["/start.sh"]
