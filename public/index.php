@@ -8,7 +8,12 @@ use Symfony\Component\HttpFoundation\Request;
 require dirname(__DIR__).'/vendor/autoload.php';
 
 try {
-    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $_SERVER['APP_ENV'] ?? 'dev');
+    $env = $_SERVER['APP_ENV'] ?? 'dev';
+    $filepath = dirname(__DIR__).'/.env';
+    
+    if (is_readable($filepath) || is_readable($filepath.'.'.$env)) {
+        (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $env);
+    }
 } catch (\Exception $e) {}
 
 if ($_SERVER['APP_DEBUG']) {
