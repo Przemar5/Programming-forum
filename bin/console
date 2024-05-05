@@ -29,15 +29,13 @@ if ($input->hasParameterOption('--no-debug', true)) {
 }
 
 try {
-    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
-} catch (\Exception $e) {}
-
-    // $env = $_SERVER['APP_ENV'] ?? 'dev';
-    // $filepath = dirname(__DIR__).'/.env';
+    $env = $_SERVER['APP_ENV'] ?? 'dev';
+    $filepath = dirname(__DIR__).'/.env';
     
-    // if (is_readable($filepath) || is_readable($filepath.'.'.$env)) {
-    //     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $env);
-    // }
+    if (is_readable($filepath) || is_readable($filepath.'.'.$env)) {
+        (new Dotenv())->bootEnv(dirname(__DIR__).'/.env', $env);
+    }
+} catch (\Exception $e) {}
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
